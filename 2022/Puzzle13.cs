@@ -74,9 +74,9 @@ public static class Puzzle13
             this.data = s;
         }
 
-        public int CompareTo(object obj) {
+        public int CompareTo(object? obj) {
             if (obj == null) return 1;
-            Packet otherPacket = obj as Packet;
+            Packet? otherPacket = obj as Packet;
             if (otherPacket != null)
                 return InOrder(otherPacket.data.Substring(1),this.data.Substring(1));
             else 

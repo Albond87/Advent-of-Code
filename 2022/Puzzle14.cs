@@ -46,7 +46,7 @@ public static class Puzzle14
         while (true) {
             int[] sand = new int[]{500,0};
             bool resting = false;
-            HashSet<int> row;
+            HashSet<int>? row;
             while (!resting) {
                 if (sand[1] == lowest) return sandCount;
                 if (points.TryGetValue(sand[1]+1,out row)) {
@@ -111,7 +111,7 @@ public static class Puzzle14
         while (true) {
             int[] sand = new int[]{500,0};
             bool resting = false;
-            HashSet<int> row;
+            HashSet<int>? row;
             while (!resting) {
                 if (sand[1] == lowest+1) { resting=true; continue; };
                 if (points.TryGetValue(sand[1]+1,out row)) {

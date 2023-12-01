@@ -44,7 +44,7 @@ public static class Puzzle16
     }
 
     static int MaxPressureWithElephant(ref Dictionary<string,Valve> valves, List<string> toOpen, string current, string elephant, int steps, int eleSteps, ref Dictionary<string, Dictionary<string, int>> distances, int time, int pressure) {
-        if (time >= 23 || toOpen.Count() == 0) return pressure;
+        if (time > 24 || toOpen.Count() == 0) return pressure;
         if (steps == 0) {
             int max = 0;
             if (eleSteps == 0) {
@@ -64,7 +64,7 @@ public static class Puzzle16
                         if (p>max) max=p;
                     }
                 }
-                return max;
+                return max==0?pressure:max;
             }
             foreach (string a in toOpen) {
                 int aTime = distances[current][a]+1;
@@ -74,7 +74,7 @@ public static class Puzzle16
                 int p = MaxPressureWithElephant(ref valves, toOpen.Where(o=>o!=a).ToList(), a, elephant, aTime-1, eleSteps-1, ref distances, time+1, newPressure);
                 if (p>max) max=p;
             }
-            return max;
+            return max==0?pressure:max;
         }
         else if (eleSteps == 0) {
             int max = 0;
@@ -86,10 +86,11 @@ public static class Puzzle16
                 int p = MaxPressureWithElephant(ref valves, toOpen.Where(o=>o!=b).ToList(), current, b, steps-1, bTime-1, ref distances, time+1, newPressure);
                 if (p>max) max=p;
             }
-            return max;
+            return max==0?pressure:max;
         }
         else {
-            return MaxPressureWithElephant(ref valves, toOpen, current, elephant, steps-1, eleSteps-1, ref distances, time+1, pressure);
+            int max=MaxPressureWithElephant(ref valves, toOpen, current, elephant, steps-1, eleSteps-1, ref distances, time+1, pressure);
+            return max==0?pressure:max;
         }
     }
 

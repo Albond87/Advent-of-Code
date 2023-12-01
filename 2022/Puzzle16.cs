@@ -4,11 +4,9 @@ public static class Puzzle16
         public Valve(int f, string[] t) {
             this.flowRate = f;
             this.tunnels = t;
-            this.open = false;
         }
         public int flowRate;
         public string[] tunnels;
-        public bool open;
     }
 
     static int distanceBetweenNodes(string start, string goal, ref Dictionary<string,Valve> valves) {
@@ -32,123 +30,77 @@ public static class Puzzle16
         return -1; 
     }
 
-    public static IEnumerable<IEnumerable<T>> Permute<T>(this IEnumerable<T> sequence)
-    {
-        if (sequence == null)
-        {
-            yield break;
+    static int MaxPressure(ref Dictionary<string,Valve> valves, List<string> toOpen, string current, ref Dictionary<string, Dictionary<string, int>> distances, int time, int pressure) {
+        if (time>28 || toOpen.Count()==0) return pressure;
+        int max = 0;
+        foreach (string v in toOpen) {
+            int newTime = time+distances[current][v]+1;
+            if (newTime > 29) continue;
+            int newPressure = pressure+((30-newTime)*valves[v].flowRate);
+            int p = MaxPressure(ref valves, toOpen.Where(o=>o!=v).ToList(), v, ref distances, newTime, pressure+((30-newTime)*valves[v].flowRate));
+            if (p > max) max = p;
         }
-
-        var list = sequence.ToList();
-
-        if (!list.Any())
-        {
-            yield return Enumerable.Empty<T>();
-        }
-        else
-        {
-            var startingElementIndex = 0;
-
-            foreach (var startingElement in list)
-            {
-                var index = startingElementIndex;
-                var remainingItems = list.Where((e, i) => i != index);
-                if (remainingItems.Count() < 13) yield return new List<T>();
-                foreach (var permutationOfRemainder in remainingItems.Permute())
-                {
-                    yield return permutationOfRemainder.Prepend(startingElement);
-                }
-
-                startingElementIndex++;
-            }
-        }
+        return max==0?pressure:max;
     }
 
-    static IEnumerable<IList<T>> GetVariations<T>(IList<T> offers, int length)
-    {
-        var startIndices = new int[length];
-        for (int i = 0; i < length; ++i)
-            startIndices[i] = i;
-
-        var indices = new HashSet<int>(); // for duplicate check
-
-        while (startIndices[0] < offers.Count)
-        {
-            var variation = new List<T>(length);
-            for (int i = 0; i < length; ++i)
-            {
-                variation.Add(offers[startIndices[i]]);
-            }
-            yield return variation;
-
-            //Count up the indices
-            AddOne(startIndices, length - 1, offers.Count - 1);
-
-            //duplicate check                
-            var check = true;
-            while (check)
-            {
-                indices.Clear();                    
-                for (int i = 0; i <= length; ++i)
-                {
-                    if (i == length)
-                    {
-                        check = false;
-                        break;
+    static int MaxPressureWithElephant(ref Dictionary<string,Valve> valves, List<string> toOpen, string current, string elephant, int steps, int eleSteps, ref Dictionary<string, Dictionary<string, int>> distances, int time, int pressure) {
+        if (time >= 23 || toOpen.Count() == 0) return pressure;
+        if (steps == 0) {
+            int max = 0;
+            if (eleSteps == 0) {
+                foreach (string a in toOpen) {
+                    int aTime = distances[current][a]+1;
+                    int newTime = time+aTime;
+                    if (newTime>25) continue;
+                    int aPressure = pressure+((26-newTime)*valves[a].flowRate);
+                    foreach (string b in toOpen) {
+                        //string b = toOpen.Skip(1).First();
+                        if (a==b) continue;
+                        int bTime = distances[elephant][b]+1;
+                        newTime = time+bTime;
+                        if (newTime>25) continue;
+                        int newPressure = aPressure+((26-newTime)*valves[b].flowRate);
+                        int p = MaxPressureWithElephant(ref valves, toOpen.Where(o=>o!=a&&o!=b).ToList(), a, b, aTime-1, bTime-1, ref distances, time+1, newPressure);
+                        if (p>max) max=p;
                     }
-                    if (indices.Contains(startIndices[i]))
-                    {
-                        var unchangedUpTo = AddOne(startIndices, i, offers.Count - 1);
-                        indices.Clear();
-                        for (int j = 0; j <= unchangedUpTo; ++j )
-                        {
-                            indices.Add(startIndices[j]);
-                        }
-                        int nextIndex = 0;
-                        for(int j = unchangedUpTo + 1; j < length; ++j)
-                        {
-                            while (indices.Contains(nextIndex))
-                                nextIndex++;
-                            startIndices[j] = nextIndex++;
-                        }
-                        break;
-                    }
-
-                    indices.Add(startIndices[i]);
                 }
+                return max;
             }
-        }
-    }
-
-    static int AddOne(int[] indices, int position, int maxElement)
-    {
-        //returns the index of the last element that has not been changed
-
-        indices[position]++;
-        for (int i = position; i > 0; --i)
-        {
-            if (indices[i] > maxElement)
-            {
-                indices[i] = 0;
-                indices[i - 1]++;
+            foreach (string a in toOpen) {
+                int aTime = distances[current][a]+1;
+                int newTime = time+aTime;
+                if (newTime>25) continue;
+                int newPressure = pressure+((26-newTime)*valves[a].flowRate);
+                int p = MaxPressureWithElephant(ref valves, toOpen.Where(o=>o!=a).ToList(), a, elephant, aTime-1, eleSteps-1, ref distances, time+1, newPressure);
+                if (p>max) max=p;
             }
-            else
-                return i;
+            return max;
         }
-        return 0;
+        else if (eleSteps == 0) {
+            int max = 0;
+            foreach (string b in toOpen) {
+                int bTime = distances[elephant][b]+1;
+                int newTime = time+bTime;
+                if (newTime>25) continue;
+                int newPressure = pressure+((26-newTime)*valves[b].flowRate);
+                int p = MaxPressureWithElephant(ref valves, toOpen.Where(o=>o!=b).ToList(), current, b, steps-1, bTime-1, ref distances, time+1, newPressure);
+                if (p>max) max=p;
+            }
+            return max;
+        }
+        else {
+            return MaxPressureWithElephant(ref valves, toOpen, current, elephant, steps-1, eleSteps-1, ref distances, time+1, pressure);
+        }
     }
 
     public static int Part1(string[] lines)
     {
-        //Valve current = new Valve(0,new string[]{});
         Dictionary<string,Valve> valves = new Dictionary<string, Valve>();
         List<string> nonZero = new List<string>();
         foreach (string l in lines) {
             string[] parts = l.Split(new string[] {"Valve "," has flow rate=","; tunnel leads to valve ","; tunnels lead to valves "},StringSplitOptions.RemoveEmptyEntries);
-            //foreach (string p in parts) Console.WriteLine(p);
             string[] tunnels = parts[2].Split(", ");
             valves[parts[0]] = new Valve(int.Parse(parts[1]),tunnels);
-            //if (parts[0] == "AA") current = valves[parts[0]];
             if (parts[1] != "0") nonZero.Add(parts[0]);
         }
         Dictionary<string, Dictionary<string, int>> interDistances = new Dictionary<string, Dictionary<string, int>>();
@@ -168,63 +120,37 @@ public static class Puzzle16
             }
             interDistances[n] = ds;
         }
-        foreach (KeyValuePair<string, Dictionary<string, int>> n1 in interDistances) {
-            Console.Write(n1.Key + " | ");
-            foreach (KeyValuePair<string, int> n2 in n1.Value) {
-                Console.Write(n2.Key + ": " + n2.Value + ", ");
-            }
-            Console.WriteLine();
-        }
-        
-        IEnumerable<IEnumerable<string>> routes = GetVariations(nonZero,7);
-        Console.WriteLine(routes.Count());
-        // foreach (IEnumerable<string> route in routes) {
-        //     foreach (string n in route) Console.Write(n + " ");
-        //     Console.WriteLine();
-        // }
-        int maxPressure = 0;
-
-        foreach (IEnumerable<string> r in routes) {
-            string[] route = r.ToArray();
-            int time = interDistances["AA"][route[0]]+1;
-            int current=0;
-            int pressure=0;
-            while (time<30) {
-                pressure += (30-time) * valves[route[current]].flowRate;
-                current++;
-                if (current<route.Length) {
-                    time += interDistances[route[current-1]][route[current]]+1;
-                } else break;
-            }
-            if (pressure>maxPressure) maxPressure=pressure;
-        }
-        // for (int i=29; i>=0; i--) {
-        //     if (!current.open && current.flowRate > 0) {
-        //         current.open = true;
-        //         pressure += i*current.flowRate;
-        //     } else {
-        //         string next = "";
-        //         foreach (string t in current.tunnels) {
-        //             if (!valves[t].open && valves[t].flowRate > 0) {
-        //                 next = t;
-        //                 break;
-        //             }
-        //         }
-        //         if (next != "") {
-        //             Console.WriteLine(next);
-        //             current = valves[next];
-        //         }
-        //         else {
-        //             Console.WriteLine(current.tunnels[0]);
-        //             current = valves[current.tunnels[0]];
-        //         }
-        //     }
-        // }
-        return maxPressure;
+        return MaxPressure(ref valves, nonZero, "AA", ref interDistances, 0, 0);
     }
 
     public static int Part2(string[] lines)
     {
-        return 0;
+        Dictionary<string,Valve> valves = new Dictionary<string, Valve>();
+        List<string> nonZero = new List<string>();
+        foreach (string l in lines) {
+            string[] parts = l.Split(new string[] {"Valve "," has flow rate=","; tunnel leads to valve ","; tunnels lead to valves "},StringSplitOptions.RemoveEmptyEntries);
+            string[] tunnels = parts[2].Split(", ");
+            valves[parts[0]] = new Valve(int.Parse(parts[1]),tunnels);
+            if (parts[1] != "0") nonZero.Add(parts[0]);
+        }
+        Dictionary<string, Dictionary<string, int>> interDistances = new Dictionary<string, Dictionary<string, int>>();
+        interDistances["AA"] = new Dictionary<string, int>();
+        foreach (string n in nonZero) {
+            interDistances["AA"][n] = distanceBetweenNodes("AA",n,ref valves);
+            Dictionary<string, int> ds = interDistances.GetValueOrDefault(n,new Dictionary<string, int>());
+            foreach (string t in nonZero) {
+                if (t == n) continue;
+                if (!ds.ContainsKey(t)) {
+                    int dist = distanceBetweenNodes(n,t,ref valves);
+                    ds[t] = dist;
+                    Dictionary<string, int> dt = interDistances.GetValueOrDefault(t,new Dictionary<string, int>());
+                    dt[n] = dist;
+                    interDistances[t] = dt;
+                }
+            }
+            interDistances[n] = ds;
+        }
+        Dictionary<string,int> cache = new Dictionary<string, int>();
+        return MaxPressureWithElephant(ref valves, nonZero, "AA", "AA", 0, 0, ref interDistances, 0, 0);
     }
 }

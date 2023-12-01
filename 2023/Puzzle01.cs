@@ -9,6 +9,6 @@ public class Puzzle01 : Puzzle
 
     public override void Part2()
     {
-        Console.WriteLine();
+        Console.WriteLine("Day 1");
     }
 }

@@ -4,7 +4,7 @@ public class Puzzle01 : Puzzle
 
     public override void Part1()
     {
-        Console.WriteLine();
+        Console.WriteLine("Day 1");
     }
 
     public override void Part2()

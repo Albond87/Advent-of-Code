@@ -2,9 +2,9 @@
 {
     static void Main()
     {
-        //string lines = System.IO.File.ReadAllText(@"Inputs/input01.txt");
-        string[] lines = System.IO.File.ReadAllLines(@"Inputs/input04.txt");
-        Console.WriteLine(Puzzle04.Part1(lines));
-        Console.WriteLine(Puzzle04.Part2(lines));
+        string lines = System.IO.File.ReadAllText(@"Inputs/input05.txt");
+        //string[] lines = System.IO.File.ReadAllLines(@"Inputs/input05.txt");
+        Console.WriteLine(Puzzle05.Part1(lines));
+        Console.WriteLine(Puzzle05.Part2(lines));
     }
 }

@@ -8,7 +8,6 @@ public static class Puzzle07
         Dictionary<string, int> dirSizes = new System.Collections.Generic.Dictionary<string, int>();
         dirSizes.Add("/",0);
         for (int i=0; i<lines.Length; i++) {
-            Console.WriteLine(lines[i]);
             if (lines[i].StartsWith("$ cd")) {
                 string dir = lines[i].Substring(5);
                 if (dir == "/") {
@@ -17,7 +16,7 @@ public static class Puzzle07
                 }
                 else if (dir == "..") {
                     dirs.RemoveAt(dirs.Count - 1);
-                    currentDir = dirs.ElementAt(dirs.Count - 1);//currentDir.Substring(0,currentDir.Length-dirNameSize-1);
+                    currentDir = dirs.ElementAt(dirs.Count - 1);
                 }
                 else {
                     dirNameSize = dir.Length;
@@ -38,11 +37,9 @@ public static class Puzzle07
                 }
                 i -=1 ;
             }
-            //Console.WriteLine(currentDir);
         }
         int total = 0;
         foreach (string k in dirSizes.Keys) {
-            //Console.WriteLine(k + ": " + dirSizes[k]);
             int size = dirSizes[k];
             if (size <= 100000) total += size;
         }            
@@ -57,7 +54,6 @@ public static class Puzzle07
         Dictionary<string, int> dirSizes = new System.Collections.Generic.Dictionary<string, int>();
         dirSizes.Add("/",0);
         for (int i=0; i<lines.Length; i++) {
-            Console.WriteLine(lines[i]);
             if (lines[i].StartsWith("$ cd")) {
                 string dir = lines[i].Substring(5);
                 if (dir == "/") {
@@ -66,7 +62,7 @@ public static class Puzzle07
                 }
                 else if (dir == "..") {
                     dirs.RemoveAt(dirs.Count - 1);
-                    currentDir = dirs.ElementAt(dirs.Count - 1);//currentDir.Substring(0,currentDir.Length-dirNameSize-1);
+                    currentDir = dirs.ElementAt(dirs.Count - 1);
                 }
                 else {
                     dirNameSize = dir.Length;
@@ -87,12 +83,10 @@ public static class Puzzle07
                 }
                 i -=1 ;
             }
-            //Console.WriteLine(currentDir);
         }
         int target = 30000000-(70000000-dirSizes["/"]);
         int smallest = dirSizes["/"];
         foreach (string k in dirSizes.Keys) {
-            //Console.WriteLine(k + ": " + dirSizes[k]);
             int size = dirSizes[k];
             if (size > target && size < smallest) smallest = size;
         }            

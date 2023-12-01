@@ -5,7 +5,7 @@ public static class Puzzle18
         HashSet<Tuple<int,int,int>> cubes = new HashSet<Tuple<int,int,int>>();
         foreach (string line in lines) {
             int[] coords = line.Split(",").Select(c=>int.Parse(c)).ToArray();
-            cubes.Add(new Tuple<int, int, int>(coords[0],coords[1],coords[2]));
+            cubes.Add(new Tuple<int,int,int>(coords[0],coords[1],coords[2]));
         }
         int surfaceArea = 0;
         foreach (Tuple<int,int,int> c in cubes) {
@@ -14,16 +14,16 @@ public static class Puzzle18
                     Tuple<int,int,int> c1;
                     switch (a) {
                         case 0:
-                            c1 = new Tuple<int, int, int>(c.Item1+d,c.Item2,c.Item3);
+                            c1 = new Tuple<int,int,int>(c.Item1+d,c.Item2,c.Item3);
                             break;
                         case 1:
-                            c1 = new Tuple<int, int, int>(c.Item1,c.Item2+d,c.Item3);
+                            c1 = new Tuple<int,int,int>(c.Item1,c.Item2+d,c.Item3);
                             break;
                         case 2:
-                            c1 = new Tuple<int, int, int>(c.Item1,c.Item2,c.Item3+d);
+                            c1 = new Tuple<int,int,int>(c.Item1,c.Item2,c.Item3+d);
                             break;    
                         default:
-                            c1 = new Tuple<int, int, int>(0,0,0);
+                            c1 = new Tuple<int,int,int>(0,0,0);
                             break;                    
                     }
                     if (!cubes.Contains(c1)) surfaceArea++;
@@ -39,7 +39,7 @@ public static class Puzzle18
         int[][] bounds = new int[][]{new int[]{1000,-1000},new int[]{1000,-1000},new int[]{1000,-1000}};
         foreach (string line in lines) {
             int[] coords = line.Split(",").Select(c=>int.Parse(c)).ToArray();
-            cubes.Add(new Tuple<int, int, int>(coords[0],coords[1],coords[2]));
+            cubes.Add(new Tuple<int,int,int>(coords[0],coords[1],coords[2]));
             for (int i=0; i<3; i++) {
                 if (coords[i] < bounds[i][0]) bounds[i][0] = coords[i];
                 if (coords[i] > bounds[i][1]) bounds[i][1] = coords[i];
@@ -54,16 +54,16 @@ public static class Puzzle18
                     Tuple<int,int,int> c1;
                     switch (a) {
                         case 0:
-                            c1 = new Tuple<int, int, int>(c.Item1+d,c.Item2,c.Item3);
+                            c1 = new Tuple<int,int,int>(c.Item1+d,c.Item2,c.Item3);
                             break;
                         case 1:
-                            c1 = new Tuple<int, int, int>(c.Item1,c.Item2+d,c.Item3);
+                            c1 = new Tuple<int,int,int>(c.Item1,c.Item2+d,c.Item3);
                             break;
                         case 2:
-                            c1 = new Tuple<int, int, int>(c.Item1,c.Item2,c.Item3+d);
+                            c1 = new Tuple<int,int,int>(c.Item1,c.Item2,c.Item3+d);
                             break;    
                         default:
-                            c1 = new Tuple<int, int, int>(0,0,0);
+                            c1 = new Tuple<int,int,int>(0,0,0);
                             break;                    
                     }
                     if (!cubes.Contains(c1)) {
@@ -98,16 +98,16 @@ public static class Puzzle18
                                                 Tuple<int,int,int> g1;
                                                 switch (ag) {
                                                     case 0:
-                                                        g1 = new Tuple<int, int, int>(g.Item1+dg,g.Item2,g.Item3);
+                                                        g1 = new Tuple<int,int,int>(g.Item1+dg,g.Item2,g.Item3);
                                                         break;
                                                     case 1:
-                                                        g1 = new Tuple<int, int, int>(g.Item1,g.Item2+dg,g.Item3);
+                                                        g1 = new Tuple<int,int,int>(g.Item1,g.Item2+dg,g.Item3);
                                                         break;
                                                     case 2:
-                                                        g1 = new Tuple<int, int, int>(g.Item1,g.Item2,g.Item3+dg);
+                                                        g1 = new Tuple<int,int,int>(g.Item1,g.Item2,g.Item3+dg);
                                                         break;    
                                                     default:
-                                                        g1 = new Tuple<int, int, int>(0,0,0);
+                                                        g1 = new Tuple<int,int,int>(0,0,0);
                                                         break;                    
                                                 }
                                                 if (!cubes.Contains(g1) && !gaps.Contains(g1)) {

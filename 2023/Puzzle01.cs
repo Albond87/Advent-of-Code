@@ -11,8 +11,12 @@ public class Puzzle01 : Puzzle
 
     public override void Part2()
     {
-        // My original solution
+        // ==================== Refined solution using Replace ====================
+        string digits = "0123456789";
+        int sum = inputs.Select(i=>i.Replace("one","o1e").Replace("two","t2o").Replace("three","t3e").Replace("four","4").Replace("five","5e").Replace("six","6").Replace("seven","7n").Replace("eight","e8t").Replace("nine","n9e")).Select(i=>int.Parse(i.First(c=>digits.Contains(c)).ToString()+i.Last(c=>digits.Contains(c)))).Sum();
+        Console.WriteLine(sum);
 
+        // ========================== Original solution ===========================
         // string[] digits = ["0","1","2","3","4","5","6","7","8","9","one","two","three","four","five","six","seven","eight","nine"];
         // int sum = 0;
         // foreach (string input in inputs) {
@@ -35,12 +39,5 @@ public class Puzzle01 : Puzzle
         //     sum += int.Parse(first.ToString()+last.ToString());
         // }
         // Console.WriteLine(sum);
-        
-
-        // Second solution after realising I could use Replace
-
-        string digits = "0123456789";
-        int sum = inputs.Select(i=>i.Replace("one","o1e").Replace("two","t2o").Replace("three","t3e").Replace("four","4").Replace("five","5e").Replace("six","6").Replace("seven","7n").Replace("eight","e8t").Replace("nine","n9e")).Select(i=>int.Parse(i.First(c=>digits.Contains(c)).ToString()+i.Last(c=>digits.Contains(c)))).Sum();
-        Console.WriteLine(sum);
     }
 }

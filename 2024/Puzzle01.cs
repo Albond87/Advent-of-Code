@@ -1,14 +1,24 @@
 public class Puzzle01 : Puzzle
 {
-    public Puzzle01() : base("01") { }
+    List<int> left;
+    List<int> right;
+
+    public Puzzle01() : base("01") {
+        left = inputs.Select(i => int.Parse(i.Split("   ")[0])).ToList();
+        right = inputs.Select(i => int.Parse(i.Split("   ")[1])).ToList();
+    }
 
     public override void Part1()
-    {
-        Console.WriteLine();
+    {        
+        left.Sort();
+        right.Sort();
+        int distance = left.Select((n,i) => Math.Abs(n-right[i])).Sum();
+        Console.WriteLine(distance);
     }
 
     public override void Part2()
     {
-        Console.WriteLine();
+        int similarity = left.Select(l => l * right.Where(r => r==l).Count()).Sum();
+        Console.WriteLine(similarity);
     }
 }

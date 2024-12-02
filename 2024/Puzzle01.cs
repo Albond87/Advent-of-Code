@@ -1,7 +1,7 @@
 public class Puzzle01 : Puzzle
 {
-    List<int> left;
-    List<int> right;
+    readonly List<int> left;
+    readonly List<int> right;
 
     public Puzzle01() : base("01") {
         left = inputs.Select(i => int.Parse(i.Split("   ")[0])).ToList();

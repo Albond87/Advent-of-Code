@@ -78,6 +78,7 @@ public class Puzzle18 : Puzzle
                 lowest = midpoint;
             }
         }
-        Console.WriteLine(bytes.First(b=>b.Value==highest).Key);
+        var blockingbyte = bytes.First(b=>b.Value==highest).Key; 
+        Console.WriteLine(blockingbyte.Item1 + "," + blockingbyte.Item2);
     }
 }

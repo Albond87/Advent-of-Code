@@ -48,13 +48,7 @@ public class Puzzle24 : Puzzle
             }
         }
         long output = BitsToNumber("z");
-        // long x = BitsToNumber("x");
-        // long y = BitsToNumber("y");
-        // Console.WriteLine(x);
-        // Console.WriteLine(y);
         Console.WriteLine(output);
-        // Console.WriteLine(x+y);
-        // Console.WriteLine((x+y)-output);
     }
 
     void SwapOutputs(string output1, string output2) {
@@ -73,7 +67,6 @@ public class Puzzle24 : Puzzle
             if (expectedoutput != null) {
                 Console.WriteLine("Expected gate " + input1 + " " + operation + " " + input2 + " not present in input.");
                 Environment.Exit(1);
-                // return null;
             }
             return "";
         }
@@ -84,13 +77,6 @@ public class Puzzle24 : Puzzle
             }
             // Find the actual inputs for the expected output and swap the outputs
             SwapOutputs(output, expectedoutput);
-            // var actualinputs = gateinputs[expectedoutput];
-            // gateoutputs[(input1, operation, input2)] = expectedoutput;
-            // gateinputs[expectedoutput] = (input1, operation, input2);
-            // gateoutputs[actualinputs] = output;
-            // gateinputs[output] = actualinputs;
-            // swaps.Add(expectedoutput);
-            // swaps.Add(output);
             return expectedoutput;
         }
         else {

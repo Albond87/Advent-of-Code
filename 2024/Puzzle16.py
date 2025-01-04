@@ -1,3 +1,11 @@
+'''
+---------------------------------------------------------------------------------------------------------
+Part 2 doesn't quite work, but it gives something close to the correct answer.
+The correct answer can be determined manually by looking at the output and finding which parts are wrong,
+and adding or subtracting to the number accordingly.
+---------------------------------------------------------------------------------------------------------
+'''
+
 file = open("Inputs/input16.txt","r")
 maze = file.readlines()
 file.close()

@@ -4,7 +4,7 @@ public class Puzzle16 : Puzzle
 
     public override void Part1()
     {
-        Console.WriteLine();
+        Console.WriteLine("Solved in Python: Puzzle16.py");
     }
 
     public override void Part2()

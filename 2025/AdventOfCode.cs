@@ -2,7 +2,7 @@
 {
     static void Main()
     {
-        Puzzle puzzle = new Puzzle01();
+        Puzzle puzzle = new Puzzle02();
         puzzle.Part1();
         puzzle.Part2();
 
